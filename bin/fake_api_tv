@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require 'goliath'
+
+class FakeApiTv < Goliath::API
+  use Goliath::Rack::DefaultMimeType
+  use Goliath::Rack::Render, "json"
+  use Goliath::Rack::Params
+  use Goliath::Rack::Validation::RequestMethod, %w(GET)
+  use Goliath::Rack::Validation::RequiredParam, { key: "code" }
+
+  def response(env)
+    if env["PATH_INFO"] == "/validate"
+      if env.params["code"] == "567"
+        [200, {}, { valid: true }]
+      else
+        [403, {}, { valid: false }]
+      end
+    else
+      [404, {}, { error: "Not found" }]
+    end
+  end
+end

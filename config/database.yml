@@ -1,0 +1,27 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  host: localhost
+  port: 5432
+  schema_search_path: public
+  username: test
+  password: test
+
+development:
+  <<: *default
+  database: test_api_development
+
+staging:
+  <<: *default
+  database: test_api_development
+
+test:
+  <<: *default
+  database: test_api_test
+
+production:
+  <<: *default
+  database: test_api_production
+  username: test_api
+  password: <%= ENV['TEST_API_DATABASE_PASSWORD'] %>
